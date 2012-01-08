@@ -1,0 +1,28 @@
+!!! XML
+!!!
+%html
+  %head
+    %title Chat
+  %body
+    %script{:src => 'http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'}
+    :javascript
+      $(document).ready(function(){
+        console.log("Starting up");
+        var ws = new WebSocket("ws://localhost:9090");
+        console.log("We have ws");
+        console.log(ws);
+        ws.onmessage = function(evt) { $("#chat_messages").append("<p>"+evt.data+"</p>"); };
+        ws.onclose = function() { console.log("socket closed"); };
+        ws.onopen = function() {
+          console.log("connected...");
+          ws.send("hello server");
+        };
+        ws.onerror = function() {console.log("error")};
+        $('#sendbtn').click(function() {
+            console.log("clicked")
+            ws.send($('#sendmsg')[0].value);
+          });
+        });
+    #chat_messages
+    %input{:id => "sendmsg", :type  => "text"}
+    %input{:id => "sendbtn", :type  => "button", :value  => "send"}
