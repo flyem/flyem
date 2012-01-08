@@ -4,9 +4,12 @@
   %head
     %title Chat
   %body
+    #fb-root
     %script{:src => 'http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'}
     %script{:src => 'js/lib/jquery.url.js'}
     %script{:src => 'js/main.js'}
+    .fb-login-button
+      login to start
     #chat_messages
     %input{:id => "sendmsg", :type  => "text"}
     %input{:id => "sendbtn", :type  => "button", :value  => "send"}
