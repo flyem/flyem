@@ -13,7 +13,7 @@ $(document).ready(function(){
     $('#send').submit(function() {
         var sendMsg = $('#sendmsg')
         console.log("clicked")
-        ws.send(sendMsg[0].value);
+        ws.send(JSON.stringify({type: 'fly', content: sendMsg[0].value}));
         sendMsg[0].value = ""
         return false;
     });

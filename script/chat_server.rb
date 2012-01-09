@@ -20,7 +20,7 @@ EM.run do
     end
 
     ws.onmessage do |msg|
-      if msg['type'] == 'login' new Login(ws).action(msg)
+      # if msg['type'] == 'login' new Login(ws).action(msg)
       User.clients.each do |c|
         if c == ws
           c.send "You said #{msg}"
