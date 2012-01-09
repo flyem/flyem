@@ -1,15 +1,7 @@
 class MyWebSocket < EventMachine::WebSocket::Connection
+  include JSONWebSocket
   def initialize
     super({})
-  end
-
-  cattr_accessor :clients
-  
-  def self.send_to_all(msg)
-    @@clients ||= []
-    @@clients.each do |c|
-      c.send msg
-    end
   end
 end
 
@@ -17,23 +9,19 @@ EM.run do
   EventMachine.start_server("0.0.0.0", 9090, MyWebSocket) do |ws|
     ws.onopen do
       puts "New client"    
-      ws.clients ||= []
+      User.clients ||= []
       
-      ws.clients.each do |c|
+      User.clients.each do |c|
         c.send "We have a new client"
       end
     
-      ws.clients << ws
+      User.clients << ws
       ws.send "Welcome friend"
     end
 
     ws.onmessage do |msg|
-      puts "Message: #{msg}"
-
-      
-
-      p ws.clients.length
-      ws.clients.each do |c|
+      if msg['type'] == 'login' new Login(ws).action(msg)
+      User.clients.each do |c|
         if c == ws
           c.send "You said #{msg}"
         else
@@ -44,8 +32,8 @@ EM.run do
       
     ws.onclose do |msg|
       puts "WebSocket closed"
-      ws.clients.delete ws
-      MyWebSocket.send_to_all "We lost a friend"
+      User.clients.delete ws
+      User.send_to_all "We lost a friend"
     end
   end
 end

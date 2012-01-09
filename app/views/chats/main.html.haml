@@ -11,5 +11,6 @@
     .fb-login-button
       login to start
     #chat_messages
-    %input{:id => "sendmsg", :type  => "text"}
-    %input{:id => "sendbtn", :type  => "button", :value  => "send"}
+    %form#send
+      %input{:id => "sendmsg", :type  => "text"}
+      %input{:id => "sendbtn", :type  => "button", :value  => "send"}

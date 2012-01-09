@@ -7,11 +7,15 @@ $(document).ready(function(){
     ws.onclose = function() { console.log("socket closed"); };
     ws.onopen = function() {
         console.log("connected...");
+        ws.send(JSON.stringify({type: 'login', username: $.url().attr('query')}));
     };
     ws.onerror = function() {console.log("error")};
-    $('#sendbtn').click(function() {
+    $('#send').submit(function() {
+        var sendMsg = $('#sendmsg')
         console.log("clicked")
-        ws.send($('#sendmsg')[0].value);
+        ws.send(sendMsg[0].value);
+        sendMsg[0].value = ""
+        return false;
     });
 });
 $(document).ready(function(){
